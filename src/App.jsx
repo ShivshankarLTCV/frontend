@@ -12,6 +12,10 @@ import OtpScreen from "./components/journey_screens/OtpScreen";
 import IncomeInputScreen from "./components/journey_screens/IncomeInputScreen";
 import PersonalDetailScreen from "./components/journey_screens/PersonalDetailScreen";
 import OperationalAndServicabilityScreen from "./components/journey_screens/OperationalAndServicabilityScreen";
+import ServicesDashboard from "./components/journey_screens/servicesDashboard";
+import Dashboard from "./components/journey_screens/dashboard";
+import Badge from "./components/journey_screens/Badge";
+
 const App = () => {
   return (
     <>
@@ -58,6 +62,9 @@ const App = () => {
               path="employment-detail"
               element={<OperationalAndServicabilityScreen />}
             />
+            <Route path="servicesDashboard" element={<ServicesDashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="badge" element={<Badge />} />
           </Route>
         </Routes>
       </main>

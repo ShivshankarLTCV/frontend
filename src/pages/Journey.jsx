@@ -46,7 +46,7 @@ const Journey = () => {
       {/* Right Side (Mobile View) */}
       <div className="w-full md:w-1/2 min-h-screen flex justify-center items-center bg-white">
         {/* Mobile frame only for md+ screens */}
-        <div className="w-full h-full md:w-[320px] md:h-[640px] md:rounded-[2rem] md:shadow-2xl md:border overflow-hidden flex flex-col p-1">
+        <div className="w-full h-full md:w-[320px] md:h-[640px] md:rounded-[2rem] md:shadow-2xl md:border overflow-hidden flex flex-col ">
           {/* Fixed Logo Header on Mobile */}
 
           {/* Scrollable Main Content */}

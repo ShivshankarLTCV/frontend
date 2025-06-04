@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
-@import "tailwindcss";
+
 /* global.css */
 
-
+@import 'keen-slider/keen-slider.min.css';
 @layer base {
   body {
     font-family: 'Arimo', sans-serif;
@@ -58,8 +58,17 @@
   animation: fadeInDown 0.5s forwards;
 }
 
+/* Hide scrollbar (for WebKit browsers) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar (for Firefox) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
 
+@import "tailwindcss";
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

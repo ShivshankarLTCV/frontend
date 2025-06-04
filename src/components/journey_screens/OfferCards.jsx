@@ -12,15 +12,9 @@ const OfferCards = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ duration: 0.4 }}
-          className="w-full relative px-4"
+          className="w-full relative px-4 mb-5"
         >
-          {/* Dismiss Button */}
-          <button
-            onClick={() => setShowCards(false)}
-            className="absolute top-2 left-7 text-gray-500 hover:text-gray-950 z-10 text-lg"
-          >
-            ✕
-          </button>
+
 
           {/* New container wrapping both cards */}
           {/* Offer Amount Card */}
@@ -35,32 +29,21 @@ const OfferCards = () => {
               🎉
             </div>
 
-            <p className="text-xs text-[#4a4a4f] mb-1">You're eligible for</p>
+            <p className="text-xs text-[#1b1b1f] ">
+              You're eligible for {"  "}
+              <span className="text-sm font-extrabold text-[#1b1b1f] tracking-wide mb-1">
+                ₹1,50,000
+              </span>{" "}
+              <br className="hidden md:block" />
+              Instant Personal Loan
+            </p>
 
-            <div className="text-2xl font-extrabold text-[#1b1b1f] tracking-wide mb-1">
-              ₹1,50,000
-            </div>
-
-            <p className="text-xs text-[#5a5a5a]">Instant Personal Loan</p>
-
-            <h4 className="text-sm text-[#6750A4] font-medium mb-1">
-              @ 12% per annum
+            <h4 className="text-xs text-[#1b1b1f] font-medium mb-1">
+              at an interest of{" "}
+              <span className="text-sm font-extrabold text-[#6750A4]">18%</span> with{" "}
+              <span className="text-sm font-extrabold text-[#6750A4]">zero</span>{" "}
+              processing fee.
             </h4>
-          </motion.div>
-
-          {/* Encourage Details Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
-            className="bg-[#F3EDFA] border border-[#D8CCE8] rounded-2xl px-4 py-2 flex items-center gap-3 shadow-md mt-2"
-          >
-            {/* Text */}
-            <div className="flex-1">
-              <p className="text-sm font-medium text-[#3F3F46] leading-tight">
-                Share more details for a better offer.📈
-              </p>
-            </div>
           </motion.div>
         </motion.div>
       )}
