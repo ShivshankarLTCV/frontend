@@ -1,79 +1,103 @@
-import { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const DOT_COUNT = 6; // Total number of badges
+const MyBadges = ({ badges }) => {
+  const containerRef = useRef(null);
+  const [centerIndex, setCenterIndex] = useState(0);
+  const [canScroll, setCanScroll] = useState(true);
 
-export default function MyBadges({ badges }) {
-  const scrollRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigate();
+  const visibleBadges = [
+    badges[(centerIndex - 1 + badges.length) % badges.length],
+    badges[centerIndex],
+    badges[(centerIndex + 1) % badges.length],
+  ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollEl = scrollRef.current;
-      const scrollLeft = scrollEl.scrollLeft;
-      const childWidth = scrollEl.firstChild?.offsetWidth || 1;
-      const index = Math.round(scrollLeft / (childWidth + 16)); // 16px = space-x-4
-      setActiveIndex(index);
+    const handleScroll = (e) => {
+      e.preventDefault();
+      if (!canScroll) return;
+      setCanScroll(false);
+
+      const delta = e.deltaY || e.deltaX;
+      delta > 0 ? handleNext() : handlePrev();
+
+      setTimeout(() => setCanScroll(true), 300);
     };
 
-    const el = scrollRef.current;
-    el?.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el?.removeEventListener("scroll", handleScroll);
-  }, []);
+    const ref = containerRef.current;
+    ref.addEventListener("wheel", handleScroll, { passive: false });
+
+    return () => {
+      ref.removeEventListener("wheel", handleScroll);
+    };
+  }, [badges.length, canScroll]);
+
+  const handlePrev = () => {
+    setCenterIndex((prev) => (prev - 1 + badges.length) % badges.length);
+  };
+
+  const handleNext = () => {
+    setCenterIndex((prev) => (prev + 1) % badges.length);
+  };
 
   return (
-    <div className="mt-25 md:mt-8 px-6 pb-10 md:pb-8">
-      <h3 className="text-center text-[#6750A4] font-semibold mb-6 md:mb-4 text-xl">
-        My Badges
-      </h3>
-
-      {/* Carousel */}
-      <div
-        ref={scrollRef}
-        className="overflow-x-auto  snap-x no-scrollbar flex space-x-4 px-1 py-2  "
+    <div className="relative mt-6">
+      {/* Arrows */}
+      <button
+        onClick={handlePrev}
+        className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#1b1b1f] shadow rounded-full p-1 z-10"
       >
-        {badges.map((badge) => (
-          <div
-            key={badge.id}
-            onClick={() =>
-              navigate("/journey/badge", {
-                state: {
-                  badge: {
-                    img: badge.img,
-                    title: badge.title,
-                    subtitle: badge.subtitle, // or badge.infoTitle if different
-                    desc: badge.desc, // or badge.infoBody if different
-                  },
-                },
-              })
-            }
-            className="flex-shrink-0 snap-center flex flex-col items-center    shadow-md transition-transform hover:scale-105 md:hover:scale-105 cursor-pointer"
-          >
-            <img
-              src={badge.img}
-              alt={badge.title}
-              className="w-20 h-20 md:w-15 md:h-15 rounded-full object-cover shadow"
-            />
-            <p className="mt-2 font-semibold text-sm text-black text-center">
-              {badge.title}
-            </p>
-            <p className="text-xs text-gray-600 text-center">{badge.subtitle}</p>
-          </div>
-        ))}
-      </div>
+        <ChevronLeft size={18} />
+      </button>
 
-      {/* Dot Indicators */}
-      <div className="mt-4 flex justify-center space-x-2">
-        {badges.map((_, idx) => (
-          <div
-            key={idx}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              idx === activeIndex ? "bg-[#4142C3]" : "bg-gray-300"
-            }`}
-          />
-        ))}
+      <button
+        onClick={handleNext}
+        className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#1b1b1f] shadow rounded-full p-1 z-10"
+      >
+        <ChevronRight size={18} />
+      </button>
+
+      {/* Badge Carousel */}
+      <div
+        ref={containerRef}
+        className="flex items-center justify-center gap-3 relative h-40 overflow-hidden"
+      >
+        {visibleBadges.map((badge, i) => {
+          const position = i === 1 ? "center" : i === 0 ? "left" : "right";
+          const variants = {
+            center: { scale: 1, y: -10, opacity: 1, zIndex: 10 },
+            left: { scale: 0.75, y: 0, opacity: 0.3, zIndex: 1 },
+            right: { scale: 0.75, y: 0, opacity: 0.3, zIndex: 1 },
+          };
+
+          return (
+            <motion.div
+              key={badge.id}
+              className="relative transition-all"
+              animate={position}
+              variants={variants}
+              transition={{ duration: 0.4 }}
+            >
+              <img
+                src={badge.img}
+                alt={badge.title}
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+              />
+              {position === "center" && (
+                <div className="text-center mt-1">
+                  <p className="text-[13px] font-bold text-[#1b1b1f]">
+                    {badge.title}
+                  </p>
+                  <p className="text-[11px] text-gray-500">{badge.subtitle}</p>
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
-}
+};
+
+export default MyBadges;

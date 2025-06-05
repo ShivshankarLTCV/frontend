@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo3.png";
-import badges from "../../../data"; // Assuming badges data is exported from data.js
+import frame from "../../assets/frame.png";
+import arrow from "../../assets/right-arrow.svg";
+import MyBadges from "./MyBadges";
+import badges from "../../../data";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -12,93 +15,82 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col h-screen md:h-full bg-gradient-to-b from-[#ffffff] via-[#ece4fd] to-[#6750a4]">
-      {/* Fixed Logo Header */}
-      <div className="text-center py-4 ">
-        <img src={logo} className="w-6 h-6 mx-auto" />
-        <p className="font-bold text-indigo-900">EQUALL</p>
+    <div className="flex flex-col h-full min-h-screen bg-white pb-4">
+      {/* Logo Header */}
+      <div className="text-center pt-4">
+        <img src={logo} className="w-6 h-6 mx-auto" alt="Logo" />
+        <p className="font-bold text-indigo-900 text-sm">EQUALL</p>
       </div>
 
-      {/* Main Body */}
-      {/* Offer Section */}
-      <div className="text-center px-4 md:mb-5 mb-21 mt-5 py-2">
-        <p className="text-lg mb-2">
-          You're a top <span className="text-green-600 font-bold">1%</span>{" "}
+      {/* Offer Text */}
+      <div className="text-center px-3 mt-4 mb-6">
+        <p className="text-base text-[13px] ">
+          You're a top  {" "} <span className="text-[#4142c3] font-bold text-[20px] px-1"> { "  "}1%</span>{" "}
           customer
         </p>
-        <p>So, we offer you </p>
-        <div className="mt-4 bg-[#eee7f9] to-[#ece4fd] rounded-2xl shadow-lg px-4 py-3 text-center relative overflow-hidden">
-          <h2 className="text-2xl font-bold text-[#1b1b1f] mb-1">
-            Personal Loan
-          </h2>
-          <div className="grid grid-cols-2 gap-2">
-            {/* <p className="text-xl font-medium text-[#1b1b1f] mt-2">
-            We offer you a <br />{" "}
-            <span className="text-2xl font-semibold">Personal Loan</span> <br />
-            of
-          </p> */}
-            <div className="flex flex-col items-center bg-[#A18CD1] text-white rounded-lg p-2">
-              <h3 className="text-lg font-bold text-[#f4f4f6] ">Rs. 3,00,000</h3>
-              <p className="text-[#1f1f1b]">Loan Amount</p>
-            </div>
-            <div className="flex flex-col items-center bg-[#A18CD1] text-white rounded-lg p-2">
-              <h3 className="text-lg font-bold text-[#f4f4f6]">18%</h3>
-              <p className="text-[#1b1b1f]">Interest Rate</p>
-            </div>
-          </div>
-        </div>
+        {/* <p className="text-sm"></p> */}
       </div>
 
-      {/* Badge Carousel Section */}
-      <div className=" pt-15  px-4">
-        <h3 className="text-center text-[#f4f4f6] font-bold mb-2 text-xl">
-          My Badges
-        </h3>
-        <div className="flex justify-center items-center gap-x-2 gap-y-0">
-          {badges.map((badge, index) => (
-            <div
-              key={badge.id}
-              onClick={() =>
-                navigate("/journey/badge", {
-                  state: {
-                    badge: {
-                      img: badge.img,
-                      title: badge.title,
-                      subtitle: badge.subtitle, // or badge.infoTitle if different
-                      desc: badge.desc, // or badge.infoBody if different
-                    },
-                  },
-                })
-              }
-              onMouseEnter={() => handleHover(index)}
-              className={`transition-all duration-300 flex flex-col items-center cursor-pointer ${
-                index === current
-                  ? "scale-100 z-10 opacity-100"
-                  : "scale-80 opacity-50"
-              }`}
-            >
-              <img
-                src={badge.img}
-                alt={badge.title}
-                className="w-18 h-18 rounded-full object-cover shadow-lg mb-1"
-              />
-              {index === current && (
-                <>
-                  <p className="text-white font-bold text-arimo text-sm">
-                    {badge.title}
-                  </p>
-                  <p className="text-white text-sm text-center">
-                    {badge.subtitle}
-                  </p>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
+      {/* Loan Offer Card */}
+      <div
+        className="rounded-xl  text-white px-4 py-5 mx-3 mb-5 relative"
+        style={{
+          backgroundImage: `url(${frame})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <p className="text-[#1b1b1f] text-xs ">
+          We offer you a <span className="text-[16px] font-semibold text-[#4142c3]">Personal Loan</span> of
+        </p>
+        <h2 className="text-[#1b1b1f] text-3xl font-extrabold my-2">₹ 3 Lakh</h2>
+        {/* <p className="text-[#4142c3] text-xs font-bold">Loan Amount</p> */}
+        <p className="text-black text-[15px] mt-2  ">
+          With <span className="text-[#4142c3] font-extrabold">ZERO</span> processing fee
+        </p>
       </div>
-      <div className="px-6">
-        <button className="w-full text-[#f4f4f6] font-medium py-2 rounded-xl bg-[#4142C3] hover:bg-[#5d5fe1] mt-6">
-          Let’s Get Started
+
+      {/* No Hidden Charges */}
+      <div className="text-center text-[#4142c3] font-semibold text-sm mb-5 shadow  py-2  ">
+        No Hidden Charges
+      </div>
+
+      {/* My Badges Section */}
+      <div
+        className="rounded-xl  px-2 py-2 mx-3 mb-4 text-white relative bg-[#f9f9f9]"
+        // style={{
+        //   backgroundImage: `url(${frame})`,
+        //   backgroundRepeat: "no-repeat",
+        //   backgroundSize: "cover",
+        //   backgroundPosition: "center",
+        // }}
+      >
+        <div className="flex justify-between items-center  ">
+          <h3 className="text-xs font-semibold text-black">My Badges</h3>
+          <button className="text-[10px] bg-white text-purple-600 px-2 py-[2px] rounded-full animate-bounce">
+            Badges
+          </button>
+        </div>
+        <MyBadges badges={badges} />
+      </div>
+
+      {/* Apply Now Button */}
+      <div className="px-4 md:mt-0 mt-6">
+        <button className="w-full flex items-center justify-center text-white text-sm font-medium py-2 rounded-lg bg-[#4142C3] hover:bg-[#5d5fe1] transition-all">
+          Apply Now
+          <span className="flex ml-2 space-x-1">
+            <img src={arrow} alt="arrow" className="w-4 h-4 animate-pulse" />
+            <img
+              src={arrow}
+              alt="arrow"
+              className="w-4 h-4 animate-pulse delay-100"
+            />
+            <img
+              src={arrow}
+              alt="arrow"
+              className="w-4 h-4 animate-pulse delay-200"
+            />
+          </span>
         </button>
       </div>
     </div>
