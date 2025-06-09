@@ -15,6 +15,8 @@ import OperationalAndServicabilityScreen from "./components/journey_screens/Oper
 import ServicesDashboard from "./components/journey_screens/servicesDashboard";
 import Dashboard from "./components/journey_screens/dashboard";
 import Badge from "./components/journey_screens/Badge";
+import GenericDashboard from "./components/journey_screens/GenericDashboard";
+
 
 const App = () => {
   return (
@@ -65,6 +67,7 @@ const App = () => {
             <Route path="servicesDashboard" element={<ServicesDashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="badge" element={<Badge />} />
+            <Route path="genericDashboard" element={<GenericDashboard />} />
           </Route>
         </Routes>
       </main>

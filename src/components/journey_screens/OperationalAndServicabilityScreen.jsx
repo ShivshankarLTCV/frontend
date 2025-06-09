@@ -72,10 +72,13 @@ const OperationalAndServicabilityScreen = ({
   return (
     <div className="flex flex-col h-screen md:h-full">
       {/* Header */}
-      <div className="flex flex-col items-center text-center space-y-1 p-1 shadow-md bg-white z-10 relative">
-        <div className="flex items-center gap-2 px-2 py-1">
+      <div className="flex flex-col items-center text-center space-y-1 p-2 shadow-md bg-white z-10 relative">
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-2 py-1"
+        >
           <img src={logo} alt="Equall Logo" className="h-8 w-8" />
-          <h2 className="text-lg font-semibold text-[#1b1b1f]">EQUALL</h2>
+          <h2 className="text-2xl font-semibold text-[#1b1b1f]">EQUALL</h2>
         </div>
         <button
           onClick={() => navigate(-1)}
@@ -190,7 +193,7 @@ const OperationalAndServicabilityScreen = ({
       </motion.div>
 
       {/* Proceed Button */}
-      <div className="p-4 shadow-inner bg-white z-10">
+      <div className="p-6 shadow-inner bg-white z-10 md:mb-0 mb-18">
         <button
           onClick={handleProceed}
           disabled={!isFormValid}

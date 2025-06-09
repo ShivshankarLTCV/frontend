@@ -80,14 +80,15 @@ const OtpScreen = () => {
   return (
     <div className="flex flex-col h-screen bg-white md:h-full">
       {/* Header */}
-      <div className="flex flex-col items-center text-center space-y-1 p-1 shadow-md bg-white z-10">
+      <div className="flex flex-col items-center text-center space-y-1 p-2 shadow-md bg-white z-10">
         <div className="relative flex items-center justify-center px-2 py-1">
-          <div className="flex items-center gap-2">
+          <div
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2"
+          >
             <img src={logo} alt="Equall Logo" className="h-8 w-8" />
             <h2 className="text-lg font-semibold">
-              <span className="text-1.5xl font-bold text-[#1b1b1f]">
-                EQUALL
-              </span>
+              <span className="text-2xl font-bold text-[#1b1b1f]">EQUALL</span>
             </h2>
           </div>
         </div>
@@ -163,7 +164,7 @@ const OtpScreen = () => {
       </motion.div>
 
       {/* Bottom CTA */}
-      <div className="p-4 shadow-inner bg-white z-10">
+      <div className="p-6 shadow-inner bg-white z-10 md:mb-0 mb-18">
         <button
           onClick={handleLogin}
           disabled={!isFormValid}

@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import logo from "../../assets/logo3.png";
 import info from "../../assets/info-icon.svg";
+import { CheckCircleIcon } from "@heroicons/react/24/solid"; // Add this import at the top
+
 const PersonalDetailScreen = () => {
   const navigate = useNavigate();
 
@@ -80,20 +82,21 @@ const PersonalDetailScreen = () => {
   return (
     <div className="flex flex-col h-screen bg-white md:h-full">
       {/* Header */}
-      <div className="flex flex-col items-center text-center space-y-1 p-1 shadow-md bg-white z-10 relative">
+      <div className="flex flex-col items-center text-center space-y-1 p-2 shadow-md bg-white z-10 relative">
         <div className="flex items-center justify-center px-2 py-1">
-          <div className="flex items-center gap-2">
+          <div
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2"
+          >
             <img src={logo} alt="Equall Logo" className="h-8 w-8" />
             <h2 className="text-lg font-semibold">
-              <span className="text-1.5xl font-bold text-[#1b1b1f]">
-                EQUALL
-              </span>
+              <span className="text-2xl font-bold text-[#1b1b1f]">EQUALL</span>
             </h2>
           </div>
         </div>
         <button
           onClick={() => navigate(-1)}
-          className="absolute left-2 top-3  text-gray-500 hover:text-gray-700"
+          className="absolute left-2 top-4  text-gray-500 hover:text-gray-700"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -128,16 +131,20 @@ const PersonalDetailScreen = () => {
           {/* Conditionally display Full Name field */}
           {isNameRequired && (
             <>
-              <div className="flex items-center gap-2">
+              <div className="relative flex items-center gap-2">
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   onBlur={() => verifyField("fullName")}
                   placeholder="Full name"
-                  className="flex-1 text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none"
+                  className={`flex-1 text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none pr-10 ${
+                    isFullNameVerified ? "border-green-500" : ""
+                  }`}
                 />
-                <input type="checkbox" checked={isFullNameVerified} readOnly />
+                {isFullNameVerified && (
+                  <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-2" />
+                )}
               </div>
               <div className="flex items-center justify-center gap-1 text-xs text-gray-500 ">
                 <img src={info} alt="i" className="h-3 w-3" />
@@ -149,8 +156,8 @@ const PersonalDetailScreen = () => {
           )}
 
           {/* Date of Birth */}
-          <div className="w-full flex items-center gap-2">
-            <div className="flex-1">
+          <div className="relative w-full flex items-center gap-2">
+            <div className="flex-1 relative">
               <DatePicker
                 wrapperClassName="w-full"
                 selected={dob}
@@ -158,18 +165,22 @@ const PersonalDetailScreen = () => {
                 onBlur={() => verifyField("dob")}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="dd/mm/yyyy"
-                className="w-full text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none"
+                className={`w-full text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none pr-10 ${
+                  isDobVerified ? "border-green-500" : ""
+                }`}
                 maxDate={new Date()}
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select"
               />
+              {isDobVerified && (
+                <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+              )}
             </div>
-            <input type="checkbox" checked={isDobVerified} readOnly />
           </div>
 
           {/* PAN Number */}
-          <div className="flex items-center gap-2">
+          <div className="relative flex items-center gap-2">
             <input
               type="text"
               value={pan}
@@ -177,15 +188,19 @@ const PersonalDetailScreen = () => {
               onBlur={() => verifyField("pan")}
               placeholder="PAN Number"
               maxLength={10}
-              className="flex-1 text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none"
+              className={`flex-1 text-center border border-gray-300 rounded-xl py-2 text-sm text-gray-700 focus:outline-none pr-10 ${
+                isPanVerified ? "border-green-500" : ""
+              }`}
             />
-            <input type="checkbox" checked={isPanVerified} readOnly />
+            {isPanVerified && (
+              <CheckCircleIcon className="h-5 w-5 text-green-500 absolute right-2 pointer-events-none" />
+            )}
           </div>
         </div>
       </motion.div>
 
       {/* Bottom CTA */}
-      <div className="p-4 shadow-inner bg-white z-10">
+      <div className="p-6 shadow-inner bg-white z-10 md:mb-0 mb-18">
         <button
           onClick={handleProceed}
           disabled={!isFormValid}

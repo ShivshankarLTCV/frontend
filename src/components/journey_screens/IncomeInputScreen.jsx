@@ -31,11 +31,10 @@ const IncomeInputScreen = () => {
   };
 
   const isFormValid =
-    ((income && income !== "others") ||  
-    (customIncome && customIncome !== "")) &&
-    ((hasOtherIncome === "no" )||
-    (hasOtherIncome === "yes" && selectedSources.length > 0));
-  
+    ((income && income !== "others") ||
+      (customIncome && customIncome !== "")) &&
+    (hasOtherIncome === "no" ||
+      (hasOtherIncome === "yes" && selectedSources.length > 0));
 
   const handleProceed = () => {
     const dataToSend = {
@@ -47,20 +46,19 @@ const IncomeInputScreen = () => {
     navigate("/journey/personal-detail");
   };
 
-
-
   return (
     <div className="flex flex-col h-screen md:h-full">
       {/* <div className="md:flex md:flex-col md:h-screen "> */}
       {/* Header */}
-      <div className="flex flex-col items-center text-center space-y-1 p-1 shadow-md bg-white z-10">
+      <div className="flex flex-col items-center text-center space-y-1 p-2 shadow-md bg-white z-10">
         <div className="relative flex items-center justify-center px-2 py-1">
-          <div className="flex items-center gap-2">
+          <div
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2"
+          >
             <img src={logo} alt="Equall Logo" className="h-8 w-8" />
             <h2 className="text-lg font-semibold">
-              <span className="text-1.5xl font-bold text-[#1b1b1f]">
-                EQUALL
-              </span>
+              <span className="text-2xl font-bold text-[#1b1b1f]">EQUALL</span>
             </h2>
           </div>
         </div>
@@ -170,33 +168,45 @@ const IncomeInputScreen = () => {
               <p className="text-sm text-[#1b1b1f] font-medium">
                 Select your other income sources:
               </p>
-              {[
-                "Rental income",
-                "Freelance",
-                "Investments",
-                "Side business",
-                "Consulting",
-                "Royalties",
-              ].map((source) => (
-                <button
-                  key={source}
-                  onClick={() => toggleSource(source)}
-                  className={`text-left py-2 px-3 border rounded-xl text-sm ${
-                    selectedSources.includes(source)
-                      ? "bg-[#6750A4] text-white"
-                      : "bg-white text-gray-700"
-                  }`}
-                >
-                  {source}
-                </button>
-              ))}
+              <div className="flex flex-col gap-2">
+                {[
+                  "Rental income",
+                  "Freelance",
+                  "Investments",
+                  "Side business",
+                  "Consulting",
+                  "Royalties",
+                ].map((source) => (
+                  <label
+                    key={source}
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      value={source}
+                      checked={selectedSources.includes(source)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedSources((prev) => [...prev, source]);
+                        } else {
+                          setSelectedSources((prev) =>
+                            prev.filter((s) => s !== source)
+                          );
+                        }
+                      }}
+                      className="accent-[#6750A4]"
+                    />
+                    {source}
+                  </label>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </motion.div>
 
       {/* Bottom Proceed Button */}
-      <div className="p-4 shadow-inner bg-white z-10">
+      <div className="p-6 shadow-inner bg-white z-10 md:mb-0 mb-18">
         <button
           onClick={handleProceed}
           disabled={!isFormValid}

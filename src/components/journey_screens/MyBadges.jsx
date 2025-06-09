@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import left from "../../assets/left-icon.svg";
+import right from "../../assets/right-icon.svg";
 
 const MyBadges = ({ badges }) => {
   const containerRef = useRef(null);
   const [centerIndex, setCenterIndex] = useState(0);
   const [canScroll, setCanScroll] = useState(true);
+  const touchStartX = useRef(null);
+  const navigate = useNavigate();
 
   const visibleBadges = [
     badges[(centerIndex - 1 + badges.length) % badges.length],
@@ -13,6 +17,7 @@ const MyBadges = ({ badges }) => {
     badges[(centerIndex + 1) % badges.length],
   ];
 
+  // Handle mouse/touchpad wheel scrolling.
   useEffect(() => {
     const handleScroll = (e) => {
       e.preventDefault();
@@ -26,10 +31,14 @@ const MyBadges = ({ badges }) => {
     };
 
     const ref = containerRef.current;
-    ref.addEventListener("wheel", handleScroll, { passive: false });
+    if (ref) {
+      ref.addEventListener("wheel", handleScroll, { passive: false });
+    }
 
     return () => {
-      ref.removeEventListener("wheel", handleScroll);
+      if (ref) {
+        ref.removeEventListener("wheel", handleScroll);
+      }
     };
   }, [badges.length, canScroll]);
 
@@ -41,26 +50,62 @@ const MyBadges = ({ badges }) => {
     setCenterIndex((prev) => (prev + 1) % badges.length);
   };
 
+  // Touch event handlers for mobile swipe support.
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const threshold = 50; // Minimum distance in pixels to consider a swipe.
+
+    if (touchStartX.current !== null) {
+      if (touchStartX.current - touchEndX > threshold) {
+        // Swiped left – move to the next badge.
+        handleNext();
+      } else if (touchEndX - touchStartX.current > threshold) {
+        // Swiped right – move to the previous badge.
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  // Navigate to /journey/badge passing badge data
+  const handleBadgeClick = (badge) => {
+    navigate("/journey/badge", {
+      state: {
+        img: badge.img,
+        title: badge.title,
+        subtitle: badge.subtitle,
+        desc: badge.desc,
+      },
+    });
+  };
+
   return (
     <div className="relative mt-6">
-      {/* Arrows */}
+      {/* Left Arrow */}
       <button
         onClick={handlePrev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#1b1b1f] shadow rounded-full p-1 z-10"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex justify-center items-center"
       >
-        <ChevronLeft size={18} />
+        <img src={left} alt="prev" className="w-full h-full" />
       </button>
 
+      {/* Right Arrow */}
       <button
         onClick={handleNext}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#1b1b1f] shadow rounded-full p-1 z-10"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex justify-center items-center"
       >
-        <ChevronRight size={18} />
+        <img src={right} alt="next" className="w-full h-full" />
       </button>
 
-      {/* Badge Carousel */}
+      {/* Badge Carousel with touch support */}
       <div
         ref={containerRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         className="flex items-center justify-center gap-3 relative h-40 overflow-hidden"
       >
         {visibleBadges.map((badge, i) => {
@@ -74,7 +119,14 @@ const MyBadges = ({ badges }) => {
           return (
             <motion.div
               key={badge.id}
-              className="relative transition-all"
+              onClick={
+                position === "center"
+                  ? () => handleBadgeClick(badge)
+                  : undefined
+              }
+              className={`relative transition-all duration-300 flex flex-col items-center justify-center ${
+                position === "center" ? "cursor-pointer" : ""
+              }`}
               animate={position}
               variants={variants}
               transition={{ duration: 0.4 }}
@@ -82,14 +134,14 @@ const MyBadges = ({ badges }) => {
               <img
                 src={badge.img}
                 alt={badge.title}
-                className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+                className="w-20 h-20 rounded-full"
               />
               {position === "center" && (
                 <div className="text-center mt-1">
-                  <p className="text-[13px] font-bold text-[#1b1b1f]">
+                  <p className="text-[15px] font-bold text-[#1b1b1f]">
                     {badge.title}
                   </p>
-                  <p className="text-[11px] text-gray-500">{badge.subtitle}</p>
+                  <p className="text-[13px] text-gray-500">{badge.subtitle}</p>
                 </div>
               )}
             </motion.div>

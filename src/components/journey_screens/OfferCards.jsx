@@ -22,7 +22,7 @@ const OfferCards = () => {
             initial={{ opacity: 0, scale: 0.8, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 10 }}
-            className="bg-gradient-to-br from-[#EBDDF7] to-[#D8CCE8] rounded-2xl shadow-lg px-4 py-2 text-center relative overflow-hidden "
+            className="bg-gradient-to-br from-[#EBDDF7] to-[#D8CCE8] rounded-2xl shadow-lg px-4 py-4 text-center relative overflow-hidden "
           >
             {/* Coin / sparkle icon animation area */}
             <div className="absolute top-2 right-2 animate-bounce text-2xl">
